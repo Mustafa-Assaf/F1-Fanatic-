@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react'
 import api from '../services/api.js'
+import RaceCard from '../components/Racecard.jsx'
 
 function Calendar () {
     const [calendar,setCalendar] =useState([])
@@ -18,7 +19,7 @@ function Calendar () {
         api.get('/meetings')
         .then (response => {
             console.log(response.data)
-            setCalendar(response.data[0])
+            setCalendar(response.data)
         })
         .catch (error => {
             console.log(error)
@@ -26,17 +27,16 @@ function Calendar () {
     }, [])
     console.log(calendar)
     return (
-        <div>
+        <div className="bg-black min-h-screen p-6">
             <h1>Race Calendar</h1>
 
+         <div className="grid grid-cols-3 gap-5">
             {calendar.length ? calendar.map(meeting => (
-                <div key={meeting.meeting_key}>
-                <p >
-                {meeting.meeting_name}
-                </p>
-                </div>
+                <RaceCard key={meeting.id} meeting={meeting} />
             )) : <span>loading</span>}
+      </div>
         </div>
+    
     )
 }
 
