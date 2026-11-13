@@ -6,6 +6,7 @@ import Drivers from './pages/Drivers'
 import DriversDetails from './pages/DriversDetails'
 import Championship from './pages/Championship'
 import Predictions from './pages/Predictions'
+import NotFound from './pages/NotFound.jsx'
 
 import Navbar from './components/Navbar'
 
@@ -23,6 +24,7 @@ function App() {
       <Route path="/drivers/:driverId" element={<DriversDetails />} />
       <Route path="/championship" element={<Championship />} />
       <Route path="/predictions" element={<Predictions />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
 
     </>

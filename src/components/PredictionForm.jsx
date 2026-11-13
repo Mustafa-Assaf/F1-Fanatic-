@@ -4,11 +4,11 @@ import api from "../services/api"
 function PredictionForm(props) {
 
     const [prediction, setPrediction] = useState({
-        first: "",
-        second: "",
-        third: "",
-        fourth: "",
-        fifth: ""
+        first: props.existingPrediction ? String(props.existingPrediction.predicted_positions[0]) : "",
+        second:props.existingPrediction ? String(props.existingPrediction.predicted_positions[1]) : "",
+        third:props.existingPrediction ? String(props.existingPrediction.predicted_positions[2]) : "",
+        fourth:props.existingPrediction ? String(props.existingPrediction.predicted_positions[3]) : "",
+        fifth:props.existingPrediction ? String(props.existingPrediction.predicted_positions[4]) : "",
     })
 
     const [submitted, setSubmitted] =useState(false)
@@ -26,7 +26,11 @@ function PredictionForm(props) {
             submitted: true
             
         }
-        await api.post("/predictions", newPrediction)
+        if (props.existingPrediction) {
+            await api.patch(`/predictions/${props.existingPrediction.id}`, newPrediction)
+        } else {
+              await api.post("/predictions", newPrediction)
+} 
         setSubmitted(true)
     }
 
@@ -37,7 +41,7 @@ function PredictionForm(props) {
                 prediction => prediction.meeting_key === Number(props.raceId)
             )
 
-            if (existingPrediction) {setSubmitted(true)}
+            if (existingPrediction && !props.existingPrediction) {setSubmitted(true)}
         }
         getPrediction()
     }, [props.raceId])
@@ -47,7 +51,7 @@ function PredictionForm(props) {
         <>
 
         {submitted ? (
-            <div className="bg-[#151515] text-white rounded-xl p-6 border border-gray-700 w-[27%]">
+            <div className="bg-[#151515] text-white rounded-xl p-6 border border-gray-700 w-[47%]">
                 <h2 className="text-2xl font-bold mb-2">Prediction Completed!</h2>
                 <p className="text-gray-400">Navigate to the Predictions Page to modify your prediction</p>
             </div>
